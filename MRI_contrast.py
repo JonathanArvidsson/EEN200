@@ -2,6 +2,7 @@ from IPython.display import Image, display
 import ipywidgets
 import numpy as np
 import matplotlib.pyplot as P
+import os
 
 seq_info_dict={
     'spin echo': {
@@ -23,7 +24,8 @@ seq_info_dict={
 
 class MRI_contrast_gui:
     """Class for the GUI for editing automatic segmentation proposals"""
-    def __init__(self,seq_name):
+    def __init__(self,seq_name,phantom_folder_path='numPhantom',
+    filename_phantom='BrainStandardResolution.npz'):
         """
         seq_name: name of sequence to work with
         """
@@ -35,12 +37,7 @@ class MRI_contrast_gui:
             self.seq_info=seq_info_dict[self.seq_name]
         self.plt2D=None
 
-        try:
-            phantom = np.load('content/EEN200/numPhantom/BrainStandardResolution.npz',allow_pickle=True) # location in google colab with git
-        except: 
-            phantom = np.load('BrainStandardResolution.npz',allow_pickle=True) # location in google colab
-        finally: 
-            phantom = np.load('numPhantom/BrainStandardResolution.npz',allow_pickle=True) # offline location
+        phantom = np.load(os.path.join(phantom_folder_path,filename_phantom)) 
         ind_show=50
         T1= phantom['T1'][50]
         
