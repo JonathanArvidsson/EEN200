@@ -36,10 +36,11 @@ class MRI_contrast_gui:
         self.plt2D=None
 
         try:
-            phantom = np.load('BrainStandardResolution.npz',allow_pickle=True) # location in google colab
+            phantom = np.load('content/EEN200/numPhantom/BrainStandardResolution.npz',allow_pickle=True) # location in google colab with git
         except: 
+            phantom = np.load('BrainStandardResolution.npz',allow_pickle=True) # location in google colab
+        finally: 
             phantom = np.load('numPhantom/BrainStandardResolution.npz',allow_pickle=True) # offline location
-
         ind_show=50
         T1= phantom['T1'][50]
         
