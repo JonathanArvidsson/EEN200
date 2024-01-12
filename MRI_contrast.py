@@ -35,7 +35,11 @@ class MRI_contrast_gui:
             self.seq_info=seq_info_dict[self.seq_name]
         self.plt2D=None
 
-        phantom = np.load('BrainStandardResolution.npz')
+        try:
+            phantom = np.load('BrainStandardResolution.npz',allow_pickle=True) # location in google colab
+        except: 
+            phantom = np.load('numPhantom/BrainStandardResolution.npz',allow_pickle=True) # offline location
+
         ind_show=50
         T1= phantom['T1'][50]
         
