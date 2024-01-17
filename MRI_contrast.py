@@ -4,21 +4,23 @@ import numpy as np
 import matplotlib.pyplot as P
 import os
 #test
+deg2rad=np.pi/180
 seq_info_dict={
     'spin echo': {
         'slider_show': ['TR (s)','TE (s)'],
         'value_init': [.5,.05],
-        'slider_range': [[0,20],[0,0.5]],
+        'slider_range': [[0,40],[0,0.5]],
     },
     'inversion recovery':  {
         'slider_show': ['TR (s)','TE (s)','TI (s)'],
         'value_init': [.5,.5,.5],
-        'slider_range': [[0,10],[0,0.5],[0,10]],
+        'slider_range': [[0,40],[0,0.5],[0,10]],
     },
     'gradient echo':{
-        'slider_show': ['TR (s)','TE (s)'],
-        'value_init': [.5,.5],
-        'slider_range': [[0,10],[0,0.5]],
+        'slider_show': ['TR (s)','TE (s)','FA (degrees)'],
+        'value_init': [.5,.5,90],
+        'slider_range': [[0,40],[0,0.5],[0,90]],
+
     }
 }
 
@@ -43,15 +45,15 @@ class MRI_contrast_gui:
         
         #initialize data
         #Proton density
-        self.pd = phantom['Rho'][ind_show].T
+        self.pd = phantom['Rho'][:,:,ind_show]
         #T1map
-        self.T1map = phantom['T1'][ind_show].T
+        self.T1map = phantom['T1'][:,:,ind_show]
         self.T1map[self.T1map==0]=1
         #T2map
-        self.T2map = phantom['T2'][ind_show].T
+        self.T2map = phantom['T2'][:,:,ind_show]
         self.T2map[self.T2map==0]=1
         #T2starmap
-        self.T2starmap = phantom['T2Star'][ind_show].T
+        self.T2starmap = phantom['T2Star'][:,:,ind_show]
         self.T2starmap[self.T2starmap==0]=1
 
         self.signal=np.copy(self.pd)
@@ -115,9 +117,10 @@ class MRI_contrast_gui:
         elif self.seq_name == 'gradient echo':
             TR=self.val_list[0]
             TE=self.val_list[1]
+            FA=self.val_list[2]
             # inversion recovery
             self.signal = self.signal_gradient_echo(
-                self.pd,self.T1map,self.T2starmap,TR,TE)
+                self.pd,self.T1map,self.T2starmap,TR,TE,FA)
 
         # Show updated image contrast
         if self.plt2D:
@@ -135,19 +138,20 @@ class MRI_contrast_gui:
         TR: Repetition time [ms]
         TE: echo time [ms]
         """
-        return np.abs(pd*np.exp(-TE/T2)*(1-2*np.exp(-TR/T1)))
+        return np.abs(pd*np.exp(-TE/T2)*(1-1*np.exp(-TR/T1)))
 
-    def signal_gradient_echo(self,pd,T1,T2star,TR,TE):
+    def signal_gradient_echo(self,pd,T1,T2star,TR,TE,FA):
         """
         pd:     proton density []
         T1:     T1 relaxation time [ms]
         T2star: T2* relaxation time [ms]
         TR:     Repetition time [ms]
         TE:     echo time [ms]
+        FA:     Flip angle [degrees]
         """
-        return np.abs(pd*np.exp(-TE/T2star)*(1-2*np.exp(-TR/T1)))
+        return np.abs(pd*(np.sin(FA*deg2rad)*np.exp(-TE/T2star)*(1-1*np.exp(-TR/T1))/(1-np.cos(FA*deg2rad)*np.exp(-TR/T1))))
 
-    def signal_inversion_recovery(self,pd,T1,T2star,TR,TE,TI):
+    def signal_inversion_recovery(self,pd,T1,T2,TR,TE,TI):
         """
         pd:     proton density []
         T1:     T1 relaxation time [ms]
@@ -156,8 +160,8 @@ class MRI_contrast_gui:
         TR:     Repetition time [ms]
         TE:     echo time [ms]
         """
-        return np.abs(pd*np.exp(-TE/T2star)*(1-2*np.exp(-TR/T1))*
-                      (1-2*np.exp(-TR/TI)))
+        return np.abs(pd*np.exp(-TE/T2)*(np.exp(-TR/T1))+
+                      pd*(1-2*np.exp(-TI/T1)))
 
 # debug
 #if True:
