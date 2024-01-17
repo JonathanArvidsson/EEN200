@@ -3,7 +3,7 @@ import ipywidgets
 import numpy as np
 import matplotlib.pyplot as P
 import os
-
+#test 
 seq_info_dict={
     'spin echo': {
         'slider_show': ['TR (s)','TE (s)'],
