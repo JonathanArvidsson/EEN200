@@ -3,12 +3,12 @@ import ipywidgets
 import numpy as np
 import matplotlib.pyplot as P
 import os
-#test 
+#test
 seq_info_dict={
     'spin echo': {
         'slider_show': ['TR (s)','TE (s)'],
         'value_init': [.5,.05],
-        'slider_range': [[0,10],[0,0.5]],
+        'slider_range': [[0,20],[0,0.5]],
     },
     'inversion recovery':  {
         'slider_show': ['TR (s)','TE (s)','TI (s)'],
