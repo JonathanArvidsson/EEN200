@@ -3,7 +3,7 @@ import ipywidgets
 import numpy as np
 import matplotlib.pyplot as P
 import os
-
+#test
 deg2rad=np.pi/180
 seq_info_dict={
     'spin echo': {
@@ -14,7 +14,7 @@ seq_info_dict={
     'inversion recovery':  {
         'slider_show': ['TR (s)','TE (s)','TI (s)'],
         'value_init': [.5,.5,.5],
-        'slider_range': [[0,20],[0,0.2],[0,10]],
+        'slider_range': [[0,20],[0,0.2],[0,20]],
     },
     'gradient echo':{
         'slider_show': ['TR (s)','TE (s)','FA (degrees)'],
@@ -122,7 +122,7 @@ class MRI_contrast_gui:
             # inversion recovery
             self.signal = self.signal_gradient_echo(
                 self.pd,self.T1map,self.T2starmap,TR,TE,FA)
-        #magnitude of signal and added noise, noise is gaussian not rician as it should be       
+        #magnitude of signal and added noise, noise is gaussian not rician, which it actually is.     
         self.signal=np.abs(self.signal+self.noise)
 
         # Show updated image contrast
@@ -135,7 +135,8 @@ class MRI_contrast_gui:
             #self.plt2D= self.sub.imshow(self.signal,cmap='gray')
             self.plt2D= self.sub.imshow(self.signal,cmap='gray',vmin=self.im_min, vmax=None)
             self.sub.set_axis_off()
-
+        #all signal equations assume monoexponential transverse and longitudinal relaxation.
+        #This is not correct for voxels that contain more than one type of tissue.
     def signal_spin_echo(self,pd,T1,T2,TR,TE):
         """
         pd: proton density []
