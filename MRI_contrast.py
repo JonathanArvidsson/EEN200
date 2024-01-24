@@ -14,7 +14,7 @@ seq_info_dict={
     'inversion recovery':  {
         'slider_show': ['TR (s)','TE (s)','TI (s)'],
         'value_init': [.5,.5,.5],
-        'slider_range': [[0,20],[0,0.2],[0,20]],
+        'slider_range': [[0,20],[0,0.2],[0,4.5]],
     },
     'gradient echo':{
         'slider_show': ['TR (s)','TE (s)','FA (degrees)'],
@@ -57,7 +57,7 @@ class MRI_contrast_gui:
         self.T2starmap[self.T2starmap==0]=1
 
         self.signal=np.copy(self.pd)
-        self.noise=0.025*np.random.randn(*self.signal.shape)
+        self.noise=0.01*np.random.randn(*self.signal.shape)
         
         # window levels for image contrast
         self.im_min = 0. 
