@@ -8,17 +8,17 @@ deg2rad=np.pi/180
 seq_info_dict={
     'spin echo': {
         'slider_show': ['TR (s)','TE (s)'],
-        'value_init': [.5,.05],
+        'value_init': [1,0],
         'slider_range': [[0,20],[0,0.2]],
     },
     'inversion recovery':  {
         'slider_show': ['TR (s)','TE (s)','TI (s)'],
-        'value_init': [.5,.5,.5],
+        'value_init': [1,0,0],
         'slider_range': [[0,20],[0,0.2],[0,4.5]],
     },
     'gradient echo':{
         'slider_show': ['TR (s)','TE (s)','FA (degrees)'],
-        'value_init': [.5,.5,90],
+        'value_init': [1,0,90],
         'slider_range': [[0,20],[0,0.2],[0,90]],
 
     }
@@ -75,13 +75,13 @@ class MRI_contrast_gui:
                 min=self.seq_info['slider_range'][i_st][0],
                 max=self.seq_info['slider_range'][i_st][1],
                 #make 100 steps
-                step=self.seq_info['slider_range'][i_st][1]/100,
+                step=self.seq_info['slider_range'][i_st][1]/200,
                 description='{}:'.format(slider_type),
                 disabled=False,
                 continuous_update=True,
                 orientation='horizontal',
                 readout=True,
-                readout_format='.2f',
+                readout_format='.3f',
                 layout=ipywidgets.Layout(width='70%'),
             )
             self.slider_list.append(new_slider)
