@@ -8,18 +8,18 @@ deg2rad=np.pi/180
 seq_info_dict={
     'spin echo': {
         'slider_show': ['TR (s)','TE (s)'],
-        'value_init': [1,0],
-        'slider_range': [[0,20],[0,0.2]],
+        'value_init': [1,0.1],
+        'slider_range': [[0,20],[0.005,0.2]],
     },
     'inversion recovery':  {
         'slider_show': ['TR (s)','TE (s)','TI (s)'],
-        'value_init': [1,0,0],
-        'slider_range': [[0,20],[0,0.2],[0,4.5]],
+        'value_init': [1,0.1,0],
+        'slider_range': [[0,20],[0.005,0.2],[0,4.5]],
     },
     'gradient echo':{
         'slider_show': ['TR (s)','TE (s)','FA (degrees)'],
-        'value_init': [1,0,90],
-        'slider_range': [[0,20],[0,0.2],[0,90]],
+        'value_init': [1,0.1,90],
+        'slider_range': [[0,20],[0.001,0.2],[0,90]],
 
     }
 }
